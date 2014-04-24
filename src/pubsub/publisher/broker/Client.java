@@ -26,7 +26,7 @@ public class Client {
      EventLoopGroup group;
        Bootstrap b;
        ClientHandler handler;
-    private boolean isServerAvaialable = false;
+    
     
     public Client(String host,int port){
         this.host = host;
@@ -43,11 +43,11 @@ public class Client {
         ch = b.connect(host, port).sync().channel();
         handler =
                 ch.pipeline().get(ClientHandler.class);
-        isServerAvaialable = true;
+        
     }
     
     public void send(NetworkMessage.Messages msg) throws IOException{
-       if(isServerAvaialable)
+       
            handler.send(msg);
        
     }
