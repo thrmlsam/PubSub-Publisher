@@ -45,7 +45,8 @@ public class Client {
                 ch.pipeline().get(ClientHandler.class);
         
     }
-    
+     
+         
     public void send(NetworkMessage.Messages msg) throws IOException{
        
            handler.send(msg);
