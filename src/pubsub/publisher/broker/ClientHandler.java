@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import pubsub.message.NetworkMessage.Messages;
+import pubsub.publisher.Login;
 
 
 class ClientHandler extends SimpleChannelInboundHandler<Messages> {
@@ -46,15 +47,35 @@ class ClientHandler extends SimpleChannelInboundHandler<Messages> {
         ctx.close();
     }
 
+    
+
+    
+
     @Override
     protected void channelRead0(ChannelHandlerContext chc, Messages msg) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        
+        
+            System.out.println("message received");
+
+            if(msg.getMessageType() == Messages.MessageType.LOGIN){
+            
+                Login.reply = msg;
+                System.out.println(msg.getMessage());
+            }
+            
+            
+       
+
+   }
 
     boolean send(Messages msg) {
         
         System.out.println(channel.isOpen() + "-" + channel.isWritable() + channel.remoteAddress());
         ChannelFuture write = channel.writeAndFlush(msg);
         return write.isSuccess();
+    }
+
+    void read() {
+        channel.read();
     }
 }

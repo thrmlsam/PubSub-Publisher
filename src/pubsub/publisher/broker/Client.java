@@ -52,5 +52,14 @@ public class Client {
            handler.send(msg);
        
     }
+
+    public void read() {
+        handler.read();
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+   
+
+    
     
 }
