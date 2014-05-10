@@ -6,8 +6,11 @@
 
 package pubsub.publisher;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 import pubsub.message.NetworkMessage.Messages;
@@ -217,10 +220,24 @@ public class Publisher extends javax.swing.JFrame {
         msg.setMessageType(Messages.MessageType.ADD_TOPIC);
         String topic = topicTextField.getText().trim();
         if(topic != null && !(topic.equalsIgnoreCase(""))){
-            msg.setTitle(topic);
-            this.topics.add(topic);
-            
-            this.topicList.addItem(topic);
+            try {
+                msg.setTitle(topic);
+                this.topics.add(topic);
+                Messages.Publisher.Builder pubMsg = Messages.Publisher.newBuilder();
+                pubMsg.setEmail(this.email);
+                pubMsg.setName(this.name);
+                pubMsg.setPassword(this.password);
+                
+                for(int i=0;i<this.getTopics().size();i++){
+                    msg.addTopics(this.getTopics().get(i));
+                }
+                msg.setPublisher(pubMsg);
+                client.send(msg.build());
+                
+                this.topicList.addItem(topic);
+            } catch (IOException ex) {
+                handleError("New Topic cannot be created. Please Try Again!");
+            }
         }
         else{
             handleError("Topic name cannot be null");
