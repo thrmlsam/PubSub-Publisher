@@ -57,8 +57,8 @@ class ClientHandler extends SimpleChannelInboundHandler<Messages> {
         
             System.out.println("message received");
 
-            if(msg.getMessageType() == Messages.MessageType.LOGIN){
-            
+            if(msg.getMessageType() == Messages.MessageType.LOGIN || msg.getMessageType() == Messages.MessageType.ADD_PUBLISHER ){
+                          
                 Login.reply = msg;
                 System.out.println(msg.getMessage());
             }
