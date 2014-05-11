@@ -65,6 +65,7 @@ public class Publisher extends javax.swing.JFrame {
         this.password = password;
         this.name = name;
         this.topics = new ArrayList<String>();
+        if(topics != null)
         this.topics.addAll(topics);
         this.client =client;
     }
@@ -119,6 +120,11 @@ public class Publisher extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setText("Post");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -243,6 +249,22 @@ public class Publisher extends javax.swing.JFrame {
             handleError("Topic name cannot be null");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String postTitle = topicList.getSelectedItem().toString();
+        String postMessage = jTextArea1.getText().trim();
+        
+        Messages.Builder msg = Messages.newBuilder();
+        msg.setMessageType(Messages.MessageType.NEW_POST);
+        msg.setTitle(postTitle);
+        msg.setMessage(postMessage);
+        try {
+            client.send(msg.build());
+        } catch (IOException ex) {
+            handleError("Problem with broker connection. Try Again!");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

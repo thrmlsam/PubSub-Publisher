@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pubsub.publisher.broker;
 
 import io.netty.channel.Channel;
@@ -11,13 +10,11 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import pubsub.message.NetworkMessage.Messages;
 import pubsub.publisher.Login;
-
 
 class ClientHandler extends SimpleChannelInboundHandler<Messages> {
 
@@ -31,7 +28,6 @@ class ClientHandler extends SimpleChannelInboundHandler<Messages> {
     public ClientHandler() {
         super(false);
     }
-
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
@@ -47,29 +43,21 @@ class ClientHandler extends SimpleChannelInboundHandler<Messages> {
         ctx.close();
     }
 
-    
-
-    
-
     @Override
     protected void channelRead0(ChannelHandlerContext chc, Messages msg) throws Exception {
-        
-        
-            System.out.println("message received");
 
-            if(msg.getMessageType() == Messages.MessageType.LOGIN || msg.getMessageType() == Messages.MessageType.ADD_PUBLISHER ){
-                          
-                Login.reply = msg;
-                System.out.println(msg.getMessage());
-            }
-            
-            
-       
+        System.out.println("message received");
 
-   }
+        if (msg.getMessageType() == Messages.MessageType.LOGIN || msg.getMessageType() == Messages.MessageType.ADD_PUBLISHER) {
+
+            Login.reply = msg;
+            System.out.println(msg.getMessage());
+        }
+
+    }
 
     boolean send(Messages msg) {
-        
+
         System.out.println(channel.isOpen() + "-" + channel.isWritable() + channel.remoteAddress());
         ChannelFuture write = channel.writeAndFlush(msg);
         return write.isSuccess();
